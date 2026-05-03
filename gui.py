@@ -1,3 +1,9 @@
+import sys
+import os
+import re
+import platform
+import utils # 引入新的 utils 工具模块
+
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel,
     QTableWidget, QTableWidgetItem, QTextEdit, QLineEdit,
@@ -5,13 +11,9 @@ from PyQt6.QtWidgets import (
     QSizePolicy, QFrame, QScrollArea
 )
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, QTimer
-from PyQt6.QtGui import QColor, QFont, QDesktopServices
+from PyQt6.QtGui import QColor, QFont, QDesktopServices, QIcon # 导入 QIcon
 from network import PortScanner, LocalPortManager, DHCPManager, HostManager, ServiceManager, WifiManager, VersionChecker
-import threading
-import sys
-import os
-import utils # 引入新的 utils 工具模块
-import platform # 用于判断系统版本
+
 
 # ==================== 工作线程（防止UI卡死） ====================
 class WorkerThread(QThread):
@@ -43,12 +45,13 @@ class MainWindow(QWidget):
     # ==================== 版本信息与更新URL ====================
     CURRENT_VERSION = "1.0.0" # 你的应用当前版本
     # 请修改为你的 GitHub 仓库 Releases API 地址
-    # 例如: https://api.github.com/repos/你的GitHub用户名/你的仓库名/releases/latest
+    # 例如: https://api.github.com/repos/你的GitHub用户/你的仓库名/releases/latest
     UPDATE_CHECK_URL = "https://api.github.com/repos/YourGitHubUser/WinNetTool/releases/latest"
 
     def __init__(self):
         super().__init__()
         self.setWindowTitle(f"WinNetTool - 网络工具箱 v{self.CURRENT_VERSION}")
+        self.setWindowIcon(QIcon('app_icon.ico')) # 设置窗口图标
         self.setGeometry(200, 100, 1280, 780)
 
         self.setStyleSheet("""
