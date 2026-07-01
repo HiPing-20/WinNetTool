@@ -1,38 +1,27 @@
 # Python
-__pycache__/*
+__pycache__/
 *.py[cod]
 *$py.class
 
-# 虚拟环境与依赖
+# 虚拟环境
 .venv/
 venv/
 env/
-ENV/
-ENV.bak/
-pyenv/
+
+# 构建输出
 build/
 dist/
-venv*/       # 兼容性
-*.egg-info/
-*.egg
 
-# IDE / 编辑器
+# IDE
 .idea/
 .vscode/
 
-# PyInstaller
-*.spec
-
-# Logs and temporary files
-*.log
-*.tmp
-*.temp
-
-# 操作系统产生的文件
+# 系统文件
 Thumbs.db
 Desktop.ini
 .DS_Store
-$Recycle.Bin/
 
-# 你可根据需要保留的文件（如图标、源码等）不要放到这里
-app_icon.ico
+# 临时文件
+*.log
+*.tmp
+*.temp
