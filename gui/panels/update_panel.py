@@ -3,6 +3,9 @@ from PyQt6.QtGui import QDesktopServices
 from PyQt6.QtCore import QUrl
 
 
+RELEASES_PAGE = "https://github.com/HiPing-20/WinNetTool/releases"
+
+
 def check_for_updates_on_startup(window):
     window.log.append("正在后台检查更新...")
 
@@ -17,7 +20,7 @@ def check_for_updates_on_startup(window):
                     window, "发现新版本",
                     f"发现新版本 v{update_info['latest_version']}!\n"
                     f"当前版本: v{window.CURRENT_VERSION}\n"
-                    f"前往下载更新：{update_info['download_url']}"
+                    f"前往下载更新：{RELEASES_PAGE}"
                 )
             elif update_info.get('error'):
                 window.log.append(f"检查更新失败: {update_info['error']}")
@@ -53,7 +56,6 @@ def check_for_updates(window):
             window.log.append(f"发现新版本: v{update_info['latest_version']}")
             ver = update_info['latest_version']
             notes = update_info.get('release_notes', '无更新说明')
-            url = update_info.get('download_url', '#')
             window.text_display_area.setHtml(f"""
                 <div style="padding: 24px;">
                     <div style="text-align:center; margin-bottom: 24px;">
@@ -66,7 +68,7 @@ def check_for_updates(window):
                         <pre style="color:#c0caf5; font-size:12px; white-space:pre-wrap; font-family:inherit;">{notes}</pre>
                     </div>
                     <div style="text-align:center;">
-                        <a href="{url}" style="
+                        <a href="{RELEASES_PAGE}" style="
                             display:inline-block; background:#7aa2f7; color:#1a1b26;
                             padding:10px 32px; border-radius:8px; text-decoration:none;
                             font-weight:bold; font-size:13px;
@@ -83,25 +85,26 @@ def check_for_updates(window):
                 QMessageBox.StandardButton.Yes
             )
             if reply == QMessageBox.StandardButton.Yes:
-                QDesktopServices.openUrl(QUrl(url))
+                QDesktopServices.openUrl(QUrl(RELEASES_PAGE))
 
         elif update_info.get('error'):
             error_msg = update_info['error']
             window.log.append(f"检查更新失败: {error_msg}")
+
             window.text_display_area.setHtml(f"""
                 <div style="padding: 40px; text-align: center;">
                     <div style="font-size: 48px; margin-bottom: 16px;">&#128269;</div>
-                    <h3 style="color: #f7768e; margin-bottom: 12px;">检查更新失败</h3>
-                    <p style="color: #565f89; font-size: 13px;">{error_msg}</p>
-                    <p style="color: #565f89; font-size: 12px; margin-top: 12px;">请检查网络连接或稍后再试。</p>
-                    <div style="margin-top: 24px; background:#1f2335; border:1px solid #292e42; border-radius:10px; padding:16px; text-align:left; display:inline-block;">
-                        <p style="color:#7aa2f7; font-weight:bold; margin-bottom:8px;">提示</p>
-                        <p style="color:#9aa5ce; font-size:12px; line-height:1.6;">
-                            1. 请确保已连接互联网<br>
-                            2. 检查防火墙是否阻止了访问<br>
-                            3. 当前版本: v{window.CURRENT_VERSION}
-                        </p>
+                    <h3 style="color: #e0af68; margin-bottom: 12px;">检查更新失败</h3>
+                    <p style="color: #c0caf5; font-size: 13px; background:#1f2335; border:1px solid #292e42; border-radius:8px; padding:12px; display:inline-block;">{error_msg}</p>
+                    <div style="margin-top: 20px;">
+                        <p style="color:#9aa5ce; font-size:12px; margin-bottom:12px;">你可以手动前往 Release 页面查看：</p>
+                        <a href="{RELEASES_PAGE}" style="
+                            display:inline-block; background:#292e42; color:#c0caf5;
+                            padding:10px 24px; border-radius:8px; text-decoration:none;
+                            font-size:13px;
+                        ">打开 Release 页面</a>
                     </div>
+                    <p style="color:#565f89; font-size:11px; margin-top:16px;">当前版本: v{window.CURRENT_VERSION}</p>
                 </div>
             """)
             window.current_text_data = window.text_display_area.toPlainText()
