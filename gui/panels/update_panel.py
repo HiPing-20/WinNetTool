@@ -85,7 +85,10 @@ def check_for_updates(window):
                 QMessageBox.StandardButton.Yes
             )
             if reply == QMessageBox.StandardButton.Yes:
-                QDesktopServices.openUrl(QUrl(RELEASES_PAGE))
+                try:
+                    QDesktopServices.openUrl(QUrl(RELEASES_PAGE))
+                except Exception:
+                    pass
 
         elif update_info.get('error'):
             error_msg = update_info['error']

@@ -282,7 +282,10 @@ class MainWindow(QWidget):
         self.table.setShowGrid(False)
         self.main_display_layout.addWidget(self.table)
 
-        self.text_display_area = QTextEdit()
+        from PyQt6.QtWidgets import QTextBrowser
+
+        self.text_display_area = QTextBrowser()
+        self.text_display_area.setOpenExternalLinks(True)
         self.text_display_area.setReadOnly(True)
         self.text_display_area.setObjectName("text_display_area")
         self.text_display_area.setVisible(False)

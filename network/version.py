@@ -6,10 +6,11 @@ class VersionChecker:
     def __init__(self, current_version, update_check_url):
         self.current_version = current_version
         self.update_check_url = update_check_url
-        # Release 页面地址（用于直接访问）
-        self.releases_url = update_check_url.replace(
-            '/releases/latest', '/releases'
-        )
+        # Release 页面地址（用于直接访问）— 从 API 地址提取仓库路径，拼接为 HTML 页面 URL
+        import re as _re
+        m = _re.search(r'repos/([^/]+/[^/]+)', update_check_url)
+        repo = m.group(1) if m else 'HiPing-20/WinNetTool'
+        self.releases_url = f'https://github.com/{repo}/releases'
 
     def check_for_updates(self):
         # 先尝试 API（有版本号信息）
@@ -26,7 +27,8 @@ class VersionChecker:
 
     def _try_api(self):
         try:
-            response = requests.get(self.update_check_url, timeout=10)
+            headers = {'Accept': 'application/vnd.github.v3+json', 'User-Agent': 'WinNetTool/1.0.0'}
+            response = requests.get(self.update_check_url, timeout=10, headers=headers)
             if response.status_code == 403:
                 return None, "GitHub API 频率限制"
             if response.status_code == 404:
